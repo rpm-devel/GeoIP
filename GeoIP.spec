@@ -3,7 +3,7 @@
 
 Name:		GeoIP
 Version:	1.6.12
-Release:	7%{?dist}
+Release:	8%{?dist}
 Summary:	Library for country/city/organization to IP address or hostname mapping
 License:	LGPLv2+
 URL:		http://www.maxmind.com/app/c
@@ -17,9 +17,8 @@ BuildRequires:	zlib-devel
 Requires:	GeoIP-data
 
 # For compatibility with original release of GeoIP in old distributions
-%if 0%{?fedora} < 22 && 0%{?rhel} < 8
-Requires:	geoipupdate
-%endif
+
+
 
 # Old name of GeoIP library package
 Obsoletes:	geoip < %{version}-%{release}
@@ -77,11 +76,7 @@ rm -f %{buildroot}%{_libdir}/*.la
 %ldconfig_scriptlets
 
 %files
-%if 0%{?_licensedir:1}
 %license COPYING
-%else
-%doc COPYING
-%endif
 %doc AUTHORS ChangeLog NEWS.md README.md
 %{_bindir}/geoiplookup
 %{_bindir}/geoiplookup6
@@ -107,6 +102,10 @@ rm -f %{buildroot}%{_libdir}/*.la
 %{_libdir}/pkgconfig/geoip.pc
 
 %changelog
+* Fri Apr 24 2026 CasjaysDev <rpm-devel@casjaysdev.pro> - 1.6.12-8
+- Modernize spec for EL10
+- Remove old Fedora/RHEL version conditionals
+
 * Thu Nov 28 2019 Thomas Andrejak <thomas.andrejak@gmail.com> - 1.6.12-7
 - Rebuilt for EPEL8
 
