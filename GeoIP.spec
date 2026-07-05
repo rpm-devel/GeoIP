@@ -5,8 +5,9 @@ Name:		GeoIP
 Version:	1.6.12
 Release:	8%{?dist}
 Summary:	Library for country/city/organization to IP address or hostname mapping
-License:	LGPLv2+
-URL:		http://www.maxmind.com/app/c
+License:	LGPL-2.0-or-later
+URL:		https://www.maxmind.com/en/geoip/legacy/geolite/
+ExclusiveArch:	x86_64 aarch64
 Source0:	https://github.com/maxmind/geoip-api-c/releases/download/v%{version}/GeoIP-%{version}.tar.gz
 Source1:        data.tar.gz
 BuildRequires:	coreutils
@@ -50,7 +51,7 @@ Development headers and static libraries for building GeoIP-based applications.
 Static snapshot of GeoIP databases
 
 %prep
-%setup -q
+%autosetup -p1
 
 %build
 %configure --disable-static --disable-dependency-tracking
@@ -59,7 +60,7 @@ Static snapshot of GeoIP databases
 sed -i -e 's|^hardcode_libdir_flag_spec=.*|hardcode_libdir_flag_spec=""|g' \
        -e 's|^runpath_var=LD_RUN_PATH|runpath_var=DIE_RPATH_DIE|g' libtool
 
-make %{?_smp_mflags}
+%make_build
 
 %install
 make DESTDIR=%{buildroot} INSTALL="install -p" install
@@ -102,6 +103,12 @@ rm -f %{buildroot}%{_libdir}/*.la
 %{_libdir}/pkgconfig/geoip.pc
 
 %changelog
+* Sat Jul 04 2026 CasjaysDev <rpm-devel@casjaysdev.pro> - 1.6.12-8
+- Source0: GitHub release URL verified (1.6.12 is latest/archived, 302→200)
+- URL: update to https maxmind.com legacy page
+- SPDX: LGPLv2+ → LGPL-2.0-or-later; add ExclusiveArch: x86_64 aarch64
+- %%autosetup -p1, %%make_build
+
 * Fri Apr 24 2026 CasjaysDev <rpm-devel@casjaysdev.pro> - 1.6.12-8
 - Modernize spec for EL10
 - Remove old Fedora/RHEL version conditionals
