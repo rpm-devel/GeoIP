@@ -63,16 +63,17 @@ sed -i -e 's|^hardcode_libdir_flag_spec=.*|hardcode_libdir_flag_spec=""|g' \
 %make_build
 
 %install
-make DESTDIR=%{buildroot} INSTALL="install -p" install
-mkdir -p %{buildroot}/usr/share/GeoIP
-tar xfvz %{SOURCE1} -C %{buildroot}/usr/share/GeoIP
+%{__rm} -rf %{buildroot}
+%{__make} DESTDIR=%{buildroot} INSTALL="install -p" install
+%{__install} -d %{buildroot}%{_datadir}/%{name}
+%{__tar} xfvz %{SOURCE1} -C %{buildroot}%{_datadir}/%{name}
 
 # nix the stuff we don't need like .la files.
-rm -f %{buildroot}%{_libdir}/*.la
+%{__rm} -f %{buildroot}%{_libdir}/*.la
 
 %check
 # Tests require network access so fail in koji; build using --with tests to run them yourself
-%{?with_tests:LD_LIBRARY_PATH=%{buildroot}%{_libdir} make check}
+%{?with_tests:LD_LIBRARY_PATH=%{buildroot}%{_libdir} %{__make} check}
 
 %ldconfig_scriptlets
 
