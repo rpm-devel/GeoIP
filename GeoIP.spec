@@ -2,6 +2,7 @@
 %bcond_with tests
 
 Name:		GeoIP
+Epoch:	1
 Version:	1.6.12
 Release:	8%{?dist}
 Summary:	Library for country/city/organization to IP address or hostname mapping
@@ -35,13 +36,13 @@ packages.
 
 %package devel
 Summary:	Development headers and libraries for GeoIP
-Requires:	%{name} = %{version}-%{release}
+Requires:	%{name} = %{?epoch:%{epoch}:}%{version}-%{release}
 Provides:	geoip-devel = %{version}-%{release}
 Obsoletes:	geoip-devel < %{version}-%{release}
 
 %package data
 Summary:        Database files
-Requires:	%{name} = %{version}-%{release}
+Requires:	%{name} = %{?epoch:%{epoch}:}%{version}-%{release}
 Provides:       %{name}-data
 
 %description devel
